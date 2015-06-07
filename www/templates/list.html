@@ -1,13 +1,21 @@
-<ion-view view-title="我的笔记">
-<ion-content ng-controller="ListCtrl">
-<div class="padding">
-	<a href="#/add" class="button button-block button-calm">新建笔记</a>
-</div>
-<div class="list">
-  <a href="#/edit/{{note.id}}" class="item" ng-repeat="note in notes">
+<ion-view view-title="我的笔记" ng-controller="ListCtrl">
+<ion-content>
+<ion-list show-reorder="reordering">
+  <ion-item class="item-remove-animate item-icon-right"
+  	href="#/edit/{{note.id}}" ng-repeat="note in notes track by note.id">
     <h2>{{note.title}}</h2>
     <p>{{note.description}}</p>
-  </a>
-</div>
+    <i class="icon ion-arrow-right-b"></i>
+    <ion-reorder-button class="ion-drag"
+    	on-reorder="move(note, $fromIndex, $toIndex)"></ion-reorder-button>
+    <ion-option-button class="button-assertive icon-left ion-trash-b"
+    	ng-click="remove(note.id)">删除</ion-option-button>
+  </ion-item>
+</ion-list>
 </ion-content>
+<div class="bar bar-footer bar-stable">
+	<a href="#/add" class="button button-assertive icon-left ion-compose">新建笔记</a>
+	<button class="button button-light icon-left ion-shuffle"
+		ng-click="toggleReordering()">排序</button>
+</div>
 </ion-view>

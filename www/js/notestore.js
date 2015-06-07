@@ -3,7 +3,7 @@ angular.module('mynotes.notestore', [])
   var notes = angular.fromJson(window.localStorage['notes'] || '[]');
 
   function persist(){
-  	window.localStorage['notes'] = angular.toJson(notes);
+    window.localStorage['notes'] = angular.toJson(notes);
   }
 
   return {
@@ -33,6 +33,22 @@ angular.module('mynotes.notestore', [])
           return;
         }
       }
+    },
+
+    move: function(note, fromIndex, toIndex){
+        notes.splice(fromIndex, 1);
+        notes.splice(toIndex, 0, note);
+        persist();
+    },
+
+    remove: function(noteId){
+      for(var i = 0; i < notes.length; i++){
+        if(notes[i].id === noteId){
+          notes.splice(i, 1);
+          persist();
+          return;
+        }
+      }     
     }
   };
 });
