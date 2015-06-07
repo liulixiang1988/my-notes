@@ -1,19 +1,6 @@
 (function(){
 app = angular.module('mynotes', ['ionic']);
 
-app.controller('ListCtrl', function($scope){
-  $scope.notes = [
-    {
-      title: "第一个笔记",
-      description: "这是我的第一个笔记"
-    },
-    {
-      title: "第二个笔记",
-      description: "这是我的第二个笔记"
-    }
-  ];
-});
-
 app.config(function($stateProvider, $urlRouterProvider) {
   //配置路由
   $stateProvider.state('list',{
@@ -22,12 +9,59 @@ app.config(function($stateProvider, $urlRouterProvider) {
   });
 
   $stateProvider.state('edit',{
-    url: '/edit',
+    url: '/edit/:noteId',
     templateUrl: 'templates/edit.html'
   });
 
   $urlRouterProvider.otherwise('/list');
 });
+
+var notes = [
+    {
+      id: "1",
+      title: "第一个笔记",
+      description: "这是我的第一个笔记"
+    },
+    {
+      id: "2",
+      title: "第二个笔记",
+      description: "这是我的第二个笔记"
+    }
+  ];
+
+function getNote(noteId){
+  for(var i = 0; i < notes.length; i++){
+    if(notes[i].id === noteId){
+      return notes[i];
+    }
+  }
+  return undefined;
+}
+
+function updateNote(note){
+  for(var i = 0; i < notes.length; i++){
+    if(notes[i].id === note.id){
+      notes[i] = note;
+      return;
+    }
+  }
+}
+
+
+app.controller('ListCtrl', function($scope){
+  $scope.notes = notes;
+});
+
+app.controller('EditCtrl', function($scope, $state){
+  $scope.note = angular.copy(getNote($state.params.noteId));
+
+  $scope.save = function(){
+    updateNote($scope.note);
+    $state.go('list');
+  }
+});
+
+
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

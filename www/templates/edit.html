@@ -1,5 +1,16 @@
 <ion-view view-title="编辑笔记">
-	<ion-content>
-		编辑界面
+	<ion-content ng-controller="EditCtrl">
+		<div class="list card">
+			<div class="item item-input">
+				<input type="text" ng-model="note.title">
+			</div>
+			<div class="item item-input">
+				<textarea rows="10" ng-model="note.description">
+				</textarea>
+			</div>
+		</div>
+		<div class="padding">
+			<button class="button button-block button-positive" ng-click="save()">保存</button>
+		</div>
 	</ion-content>
 </ion-view>
